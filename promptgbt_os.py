@@ -1875,11 +1875,11 @@ class PromptGBTOS:
         }
 
     def clear_screen(self):
-        """Clear the terminal screen"""
+        """Clears the terminal screen."""
         os.system('cls' if os.name == 'nt' else 'clear')
 
     def print_colored(self, text: str, color: str = 'white'):
-        """Print colored text"""
+        """Prints colored text if colorama is available."""
         if HAS_COLORAMA:
             color_map = {
                 'pink': Fore.MAGENTA,
@@ -1894,7 +1894,7 @@ class PromptGBTOS:
             print(text)
 
     def print_title(self):
-        """Print the main title in Old English style"""
+        """Prints the main title in Old English style."""
         title_art = """
   ████████   ████████    ██████   ██████████ ████████ █████████ █████████ █████████ █████████
   ████████   ████████   ███████   ██████████ ████████ █████████ █████████ █████████ █████████
@@ -1915,7 +1915,7 @@ class PromptGBTOS:
         self.print_colored(title_art, 'pink')
 
     def print_menu_decorations(self):
-        """Print decorative elements for menus"""
+        """Print decorative elements for the menu."""
         decoration = "╔══════════════════════════════════════════════════════════════════╗"
         self.print_colored(decoration, 'pink')
         center_text = "║                    🚀 AI PROMPT GENERATION SYSTEM 🚀               ║"
@@ -1925,7 +1925,7 @@ class PromptGBTOS:
         print()
 
     def show_main_menu(self):
-        """Display the main menu"""
+        """Display and format the main menu options."""
         self.clear_screen()
         self.print_title()
         print()
@@ -1943,7 +1943,7 @@ class PromptGBTOS:
         print()
 
     def show_readme(self):
-        """Display the README information"""
+        """Displays README information."""
         self.clear_screen()
         self.print_colored("PromptGBT OS Documentation", 'pink')
         print("=" * 50)
@@ -1978,7 +1978,7 @@ class PromptGBTOS:
         input("\nPress Enter to return to main menu...")
 
     def show_category_selection(self):
-        """Display category selection menu"""
+        """Display a menu for selecting content categories."""
         self.clear_screen()
         self.print_colored("Choose Your Content Category", 'pink')
         print("★ ═══════════════════════════════════════════════════════════════════ ★")
@@ -2001,7 +2001,7 @@ class PromptGBTOS:
         self.print_colored("Type category number, name, 'home', or 'quit'", 'green')
 
     def show_subcategory_selection(self, category: str):
-        """Display subcategory selection menu"""
+        """Display subcategory selection menu."""
         self.clear_screen()
         self.print_colored(f"Choose {category.upper()} Subcategory", 'pink')
         print("═" * 50)
@@ -2016,7 +2016,7 @@ class PromptGBTOS:
         self.print_colored("Type subcategory number, 'back', 'home', or 'quit'", 'green')
 
     def show_question(self):
-        """Display current question"""
+        """Display the current question and related information."""
         self.clear_screen()
         
         progress = f"Question {self.current_question_index + 1} of {len(self.questions)}"
@@ -2039,7 +2039,7 @@ class PromptGBTOS:
         print("Navigation: 'back', 'next', 'restart', 'home', 'quit'")
 
     def show_results(self, prompt: str):
-        """Display the generated prompt"""
+        """Displays the generated prompt in a formatted box."""
         self.clear_screen()
         self.print_colored("Your Generated Prompt", 'pink')
         print("=" * 50)
@@ -2061,7 +2061,7 @@ class PromptGBTOS:
         self.print_colored("'save', 'restart', 'home', 'quit'", 'green')
 
     def get_user_input(self, prompt: str = "> ") -> str:
-        """Get user input with prompt"""
+        """Get user input with a specified prompt."""
         try:
             return input(prompt).strip()
         except KeyboardInterrupt:
@@ -2069,7 +2069,7 @@ class PromptGBTOS:
             sys.exit(0)
 
     def generate_prompt_template(self) -> str:
-        """Generate the final prompt from user answers"""
+        """Generates a project creation prompt based on user answers."""
         prompt = f"Create a {self.current_category.lower()} project with the following specifications:\n\n"
         prompt += f"Type: {self.current_subcategory}\n\n"
         prompt += "Detailed Requirements:\n"
@@ -2085,7 +2085,7 @@ class PromptGBTOS:
         return prompt
 
     def save_prompt_to_file(self, prompt: str):
-        """Save the generated prompt to a file"""
+        """Saves a generated prompt to a timestamped file."""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"promptgbt_{self.current_category}_{self.current_subcategory.replace(' ', '_')}_{timestamp}.txt"
         
@@ -2097,7 +2097,7 @@ class PromptGBTOS:
             self.print_colored(f"❌ Error saving file: {e}", 'red')
 
     def handle_navigation(self, user_input: str) -> bool:
-        """Handle navigation commands. Returns True if handled, False otherwise"""
+        """Handle navigation commands and determine if they are processed."""
         if user_input.lower() in ['quit', 'q', '3']:
             print("\nThanks for using PromptGBT OS! 🚀")
             sys.exit(0)
@@ -2107,7 +2107,16 @@ class PromptGBTOS:
         return False
 
     def run_questionnaire(self):
-        """Run the question-answer sequence"""
+        """Executes a questionnaire sequence based on the current subcategory.
+        
+        The function retrieves questions from the question templates, handles user
+        navigation, records answers, and generates a prompt after all questions are
+        answered. It also provides options to save the prompt to a file or restart the
+        questionnaire.
+        
+        Args:
+            self: The instance of the class containing the method.
+        """
         self.questions = self.question_templates.get(self.current_subcategory, [])
         if not self.questions:
             self.print_colored(f"No questions available for {self.current_subcategory}", 'red')
@@ -2157,7 +2166,17 @@ class PromptGBTOS:
                 return
 
     def run(self):
-        """Main application loop"""
+        """Main application loop that handles user navigation through different screens.
+        
+        This method continuously runs, processing user input and updating the current
+        screen state until the user chooses to quit. It manages transitions between the
+        main menu, category selection, and subcategory selection screens, handling
+        invalid inputs gracefully.  The loop includes: - Displaying the main menu and
+        handling navigation based on user input. - Navigating through category
+        selection with a mapping of numeric and named categories. - Selecting
+        subcategories by index or name, running a questionnaire if a valid subcategory
+        is chosen, and returning to the main menu.
+        """
         while True:
             if self.current_screen == 'main_menu':
                 self.show_main_menu()
@@ -2235,7 +2254,7 @@ class PromptGBTOS:
 
 
 def main():
-    """Main entry point"""
+    """Starts the PromptGBTOS application."""
     try:
         app = PromptGBTOS()
         app.run()
