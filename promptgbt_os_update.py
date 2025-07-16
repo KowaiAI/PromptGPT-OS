@@ -2143,11 +2143,11 @@ class PromptGBTOS:
         }
 
     def clear_screen(self):
-        """Clear the terminal screen"""
+        """Clears the terminal screen."""
         os.system('cls' if os.name == 'nt' else 'clear')
 
     def print_colored(self, text: str, color: str = 'white'):
-        """Print colored text"""
+        """Prints text in specified color if colorama is available."""
         if HAS_COLORAMA:
             color_map = {
                 'pink': Fore.MAGENTA,
@@ -2162,7 +2162,7 @@ class PromptGBTOS:
             print(text)
 
     def print_title(self):
-        """Print the main title in Old English style"""
+        """Prints the main title in Old English style."""
         title_art = """
   ████████   ████████    ██████   ██████████ ████████ █████████ █████████ █████████ █████████
   ████████   ████████   ███████   ██████████ ████████ █████████ █████████ █████████ █████████
@@ -2183,7 +2183,7 @@ class PromptGBTOS:
         self.print_colored(title_art, 'pink')
 
     def print_menu_decorations(self):
-        """Print decorative elements for menus"""
+        """Prints decorative elements and centered text for a menu."""
         decoration = "╔══════════════════════════════════════════════════════════════════╗"
         self.print_colored(decoration, 'pink')
         center_text = "║                    🚀 AI PROMPT GENERATION SYSTEM 🚀               ║"
@@ -2193,7 +2193,7 @@ class PromptGBTOS:
         print()
 
     def show_main_menu(self):
-        """Display the main menu"""
+        """Display and interact with the main menu."""
         self.clear_screen()
         self.print_title()
         print()
@@ -2211,7 +2211,7 @@ class PromptGBTOS:
         print()
 
     def show_readme(self):
-        """Display the README information"""
+        """Displays README information."""
         self.clear_screen()
         self.print_colored("PromptGBT OS Documentation", 'pink')
         print("=" * 50)
@@ -2246,7 +2246,7 @@ class PromptGBTOS:
         input("\nPress Enter to return to main menu...")
 
     def show_category_selection(self):
-        """Display category selection menu"""
+        """Display and print the category selection menu."""
         self.clear_screen()
         self.print_colored("Choose Your Content Category", 'pink')
         print("★ ═══════════════════════════════════════════════════════════════════ ★")
@@ -2269,7 +2269,7 @@ class PromptGBTOS:
         self.print_colored("Type category number, name, 'home', or 'quit'", 'green')
 
     def show_subcategory_selection(self, category: str):
-        """Display subcategory selection menu"""
+        """Display subcategory selection menu."""
         self.clear_screen()
         self.print_colored(f"Choose {category.upper()} Subcategory", 'pink')
         print("═" * 50)
@@ -2284,7 +2284,7 @@ class PromptGBTOS:
         self.print_colored("Type subcategory number, 'back', 'home', or 'quit'", 'green')
 
     def show_question(self):
-        """Display current question"""
+        """Display current question with progress, category, and navigation options."""
         self.clear_screen()
         
         progress = f"Question {self.current_question_index + 1} of {len(self.questions)}"
@@ -2307,7 +2307,7 @@ class PromptGBTOS:
         print("Navigation: 'back', 'next', 'restart', 'home', 'quit'")
 
     def show_results(self, prompt: str):
-        """Display the generated prompt"""
+        """Display the generated prompt in a formatted box with navigation options."""
         self.clear_screen()
         self.print_colored("Your Generated Prompt", 'pink')
         print("=" * 50)
@@ -2329,7 +2329,7 @@ class PromptGBTOS:
         self.print_colored("'save', 'restart', 'home', 'quit'", 'green')
 
     def get_user_input(self, prompt: str = "> ") -> str:
-        """Get user input with prompt"""
+        """Get user input with a specified prompt and handle keyboard interrupts."""
         try:
             return input(prompt).strip()
         except KeyboardInterrupt:
@@ -2337,9 +2337,9 @@ class PromptGBTOS:
             sys.exit(0)
 
     def generate_questions_for_subcategory(self, subcategory: str) -> List[str]:
-        """Generate comprehensive questions for any subcategory"""
         
         # Check if we have specific templates first
+        """Generate comprehensive questions for a given subcategory."""
         if subcategory in self.question_templates:
             return self.question_templates[subcategory]
         
@@ -2401,7 +2401,7 @@ class PromptGBTOS:
         return base_questions
 
     def get_questions_for_subcategory(self, subcategory: str) -> List[str]:
-        """Get questions for any subcategory, using templates or generating them"""
+        """Retrieve questions for a specified subcategory."""
         return self.generate_questions_for_subcategory(subcategory)
         """Generate the final prompt from user answers"""
         prompt = f"Create a {self.current_category.lower()} project with the following specifications:\n\n"
@@ -2418,94 +2418,123 @@ class PromptGBTOS:
         
     # Additional template functions for remaining subcategories
     def _generate_script_prompt(self, answers: dict) -> str:
+        """Generates a script template based on provided answers."""
         return self._generate_code_template("Script", answers, "automation script")
     
     def _generate_backend_prompt(self, answers: dict) -> str:
+        """Generate a backend prompt using a code template."""
         return self._generate_code_template("Backend System", answers, "backend API")
     
     def _generate_debug_prompt(self, answers: dict) -> str:
+        """Generates a debug prompt using provided answers."""
         return self._generate_code_template("Debug Solution", answers, "debugging solution")
     
     def _generate_code_analysis_prompt(self, answers: dict) -> str:
+        """Generates a code analysis prompt using provided answers."""
         return self._generate_code_template("Code Analysis", answers, "code analysis report")
     
     def _generate_social_media_image_prompt(self, answers: dict) -> str:
+        """Generates a social media image prompt."""
         return self._generate_image_template("Social Media Image", answers)
     
     def _generate_meme_prompt(self, answers: dict) -> str:
+        """Generates a meme prompt using provided answers."""
         return self._generate_image_template("Meme", answers)
     
     def _generate_business_image_prompt(self, answers: dict) -> str:
+        """Generate a business image prompt using provided answers."""
         return self._generate_image_template("Business Image", answers)
     
     def _generate_marketing_image_prompt(self, answers: dict) -> str:
+        """Generates a marketing image prompt using provided answers."""
         return self._generate_image_template("Marketing Image", answers)
     
     def _generate_infographic_prompt(self, answers: dict) -> str:
+        """Generates an infographic prompt using a template and provided answers."""
         return self._generate_image_template("Infographic", answers)
     
     def _generate_character_prompt(self, answers: dict) -> str:
+        """Generates a character design prompt using the provided answers."""
         return self._generate_image_template("Character Design", answers)
     
     def _generate_hiphop_prompt(self, answers: dict) -> str:
+        """Generates a Hip Hop/Rap track prompt using provided answers."""
         return self._generate_music_template("Hip Hop/Rap Track", answers)
     
     def _generate_rnb_prompt(self, answers: dict) -> str:
+        """Generates an R&B/Soul track prompt using the provided answers."""
         return self._generate_music_template("R&B/Soul Track", answers)
     
     def _generate_country_prompt(self, answers: dict) -> str:
+        """Generates a country song prompt."""
         return self._generate_music_template("Country Song", answers)
     
     def _generate_experimental_prompt(self, answers: dict) -> str:
+        """Generates an experimental music prompt."""
         return self._generate_music_template("Experimental Music", answers)
     
     def _generate_vocal_prompt(self, answers: dict) -> str:
+        """Generate a vocal performance prompt using the provided answers."""
         return self._generate_music_template("Vocal Performance", answers)
     
     def _generate_commercial_music_prompt(self, answers: dict) -> str:
+        """Generates a commercial music prompt using provided answers."""
         return self._generate_music_template("Commercial Music", answers)
     
     def _generate_voice_over_prompt(self, answers: dict) -> str:
+        """Generates a voice over prompt using a music template."""
         return self._generate_music_template("Voice Over", answers)
     
     def _generate_business_text_prompt(self, answers: dict) -> str:
+        """Generate a business document text prompt."""
         return self._generate_text_template("Business Document", answers)
     
     def _generate_social_media_text_prompt(self, answers: dict) -> str:
+        """Generates a social media text prompt based on provided answers."""
         return self._generate_text_template("Social Media Content", answers)
     
     def _generate_academic_prompt(self, answers: dict) -> str:
+        """Generates an academic writing prompt based on provided answers."""
         return self._generate_text_template("Academic Writing", answers)
     
     def _generate_fiction_prompt(self, answers: dict) -> str:
+        """Generates a fiction writing prompt based on provided answers."""
         return self._generate_text_template("Fiction Writing", answers)
     
     def _generate_nonfiction_prompt(self, answers: dict) -> str:
+        """Generate a non-fiction writing prompt based on provided answers."""
         return self._generate_text_template("Non-Fiction Writing", answers)
     
     def _generate_marketing_text_prompt(self, answers: dict) -> str:
+        """Generates a marketing text prompt from given answers."""
         return self._generate_text_template("Marketing Content", answers)
     
     def _generate_commercial_video_prompt(self, answers: dict) -> str:
+        """Generates a commercial video prompt using provided answers."""
         return self._generate_video_template("Commercial Video", answers)
     
     def _generate_animation_prompt(self, answers: dict) -> str:
+        """Generates an animation prompt using the provided answers."""
         return self._generate_video_template("Animation", answers)
     
     def _generate_tutorial_prompt(self, answers: dict) -> str:
+        """Generates a tutorial video prompt using provided answers."""
         return self._generate_video_template("Tutorial Video", answers)
     
     def _generate_music_video_prompt(self, answers: dict) -> str:
+        """Generates a music video prompt using a template."""
         return self._generate_video_template("Music Video", answers)
     
     def _generate_documentary_prompt(self, answers: dict) -> str:
+        """Generates a documentary prompt using provided answers."""
         return self._generate_video_template("Documentary", answers)
     
     def _generate_social_media_video_prompt(self, answers: dict) -> str:
+        """Generates a social media video prompt using provided answers."""
         return self._generate_video_template("Social Media Video", answers)
 
     def _generate_code_template(self, project_type: str, answers: dict, output_type: str) -> str:
-        """Generic code project template"""
+        """Generates a code template based on project type, answers, and output type."""
         prompt = f"""Develop a comprehensive {project_type.lower()} with the following specifications:
 
 PROJECT OVERVIEW:
@@ -2546,7 +2575,8 @@ Generate a professional {output_type} that meets all specified requirements and 
         return prompt
 
     def _generate_image_template(self, image_type: str, answers: dict) -> str:
-        """Generic image project template"""
+        """Generates a template prompt for creating an image based on type and
+        specifications."""
         prompt = f"""Create a stunning {image_type.lower()} with the following specifications:
 
 PROJECT OVERVIEW:
@@ -2586,7 +2616,7 @@ Create a professional {image_type.lower()} that captures attention and achieves 
         return prompt
 
     def _generate_music_template(self, music_type: str, answers: dict) -> str:
-        """Generic music project template"""
+        """Generates a professional music project template based on type and user answers."""
         prompt = f"""Produce a professional {music_type.lower()} with the following specifications:
 
 PROJECT OVERVIEW:
@@ -2626,7 +2656,7 @@ Create a professional {music_type.lower()} that meets industry standards and ach
         return prompt
 
     def _generate_text_template(self, text_type: str, answers: dict) -> str:
-        """Generic text project template"""
+        """Generates a text template based on type and user-provided specifications."""
         prompt = f"""Write compelling {text_type.lower()} with the following specifications:
 
 PROJECT OVERVIEW:
@@ -2666,7 +2696,7 @@ Create professional {text_type.lower()} that engages the target audience and ach
         return prompt
 
     def _generate_video_template(self, video_type: str, answers: dict) -> str:
-        """Generic video project template"""
+        """Generates a video project template based on the provided type and answers."""
         prompt = f"""Produce a compelling {video_type.lower()} with the following specifications:
 
 PROJECT OVERVIEW:
@@ -2706,7 +2736,7 @@ Create a professional {video_type.lower()} that tells a compelling story and ach
         return prompt
 
     def save_prompt_to_file(self, prompt: str):
-        """Save the generated prompt to a file"""
+        """Save generated prompt to a timestamped file."""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"promptgbt_{self.current_category}_{self.current_subcategory.replace(' ', '_')}_{timestamp}.txt"
         
@@ -2718,7 +2748,7 @@ Create a professional {video_type.lower()} that tells a compelling story and ach
             self.print_colored(f"❌ Error saving file: {e}", 'red')
 
     def handle_navigation(self, user_input: str) -> bool:
-        """Handle navigation commands. Returns True if handled, False otherwise"""
+        """Handle navigation commands."""
         if user_input.lower() in ['quit', 'q', '3']:
             print("\nThanks for using PromptGBT OS! 🚀")
             sys.exit(0)
@@ -2728,7 +2758,16 @@ Create a professional {video_type.lower()} that tells a compelling story and ach
         return False
 
     def run_questionnaire(self):
-        """Run the question-answer sequence"""
+        """Run the question-answer sequence for the current subcategory.
+        
+        This method initializes the questionnaire, displays questions to the user, and
+        handles user input for navigation and answer submission. It also generates a
+        prompt based on the answers provided and allows the user to save, copy, or
+        restart the questionnaire process.  The function manages the flow of the
+        questionnaire using a while loop to iterate through each question and another
+        while loop to handle post-questionnaire actions like saving or copying the
+        generated prompt.
+        """
         self.questions = self.question_templates.get(self.current_subcategory, [])
         if not self.questions:
             self.print_colored(f"No questions available for {self.current_subcategory}", 'red')
@@ -2780,7 +2819,18 @@ Create a professional {video_type.lower()} that tells a compelling story and ach
                 return
 
     def run(self):
-        """Main application loop"""
+        """Main application loop.
+        
+        This function handles the navigation through different screens of the
+        application, including the main menu, category selection, and subcategory
+        selection. It processes user input to transition between screens or handle
+        specific actions like quitting the application. The function also manages error
+        handling for invalid inputs by displaying error messages and prompting the user
+        again.
+        
+        Args:
+            self: The instance of the class containing the run method.
+        """
         while True:
             if self.current_screen == 'main_menu':
                 self.show_main_menu()
@@ -2858,7 +2908,7 @@ Create a professional {video_type.lower()} that tells a compelling story and ach
 
 
 def main():
-    """Main entry point"""
+    """Entry point for the PromptGBT OS application."""
     try:
         app = PromptGBTOS()
         app.run()
