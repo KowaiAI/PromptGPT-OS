@@ -38,7 +38,7 @@ class PromptGPTOS:
         self.hotkey_enabled = True
         
     def setup_hotkeys(self):
-        """Setup global hotkeys for navigation"""
+        """Setup global hotkeys for navigation."""
         try:
             # Disable keyboard hotkeys in terminal environment to prevent input blocking
             # keyboard.add_hotkey('shift+s', lambda: self.handle_hotkey('start'))
@@ -53,13 +53,19 @@ class PromptGPTOS:
             self.hotkey_enabled = False
     
     def handle_hotkey(self, action):
-        """Handle hotkey presses"""
+        """Handle hotkey presses by performing corresponding actions."""
         if action == 'quit':
             self.quit_app()
         # Other hotkey actions can be handled here
     
     def run(self):
-        """Main application loop"""
+        """Main application loop.
+        
+        This function continuously runs, displaying different pages based on the
+        current page attribute. It handles user input through hotkeys and manages
+        transitions between various menu and selection screens. The loop also includes
+        error handling to manage unexpected exceptions and KeyboardInterrupts.
+        """
         console.clear()
         self.setup_hotkeys()
         
@@ -86,7 +92,7 @@ class PromptGPTOS:
                 self.current_page = "main_menu"
     
     def show_main_menu(self):
-        """Display the main menu splash screen"""
+        """Display and handle user interaction with the main menu."""
         console.clear()
         display_manager.show_header()
         
@@ -133,7 +139,7 @@ class PromptGPTOS:
             self.quit_app()
     
     def show_readme(self):
-        """Display the readme page"""
+        """Display the README page."""
         console.clear()
         display_manager.show_header()
         
@@ -189,7 +195,15 @@ class PromptGPTOS:
             self.current_page = "main_menu"
     
     def show_category_selection(self):
-        """Display category selection menu"""
+        """Displays a menu for users to select a content creation category.
+        
+        This function clears the console, shows the header, and presents a list of
+        available categories with icons, names, and descriptions. Users can choose by
+        entering a category number or name. The function handles navigation options
+        like returning to the main menu or quitting the application. It also maps user
+        choices to corresponding categories and updates the current state of the
+        application accordingly.
+        """
         console.clear()
         display_manager.show_header()
         
@@ -241,7 +255,14 @@ class PromptGPTOS:
                 self.current_page = "subcategory_selection"
     
     def show_subcategory_selection(self):
-        """Display subcategory selection for chosen category"""
+        """Display subcategory selection for the currently selected category.
+        
+        The function clears the console, shows a header, and retrieves the
+        subcategories of the current category. It constructs a text panel listing the
+        subcategories with interactive options to navigate back, return home, or quit
+        the application. Users can select a subcategory by number or name. If an
+        invalid choice is made, an error message is displayed.
+        """
         console.clear()
         display_manager.show_header()
         
@@ -301,7 +322,13 @@ class PromptGPTOS:
                 time.sleep(1)
     
     def show_questionnaire(self):
-        """Display questionnaire for selected category/subcategory"""
+        """Displays a questionnaire for the selected category and subcategory.
+        
+        The function retrieves questions based on the current category and subcategory,
+        then presents them one by one to the user. It handles navigation commands like
+        'back', 'restart', 'home', and 'quit'. After processing the answer, it updates
+        the user's answers and moves to the next question or navigates accordingly.
+        """
         questions = prompt_gen.get_questions(self.current_category, self.current_subcategory)
         
         if self.question_index >= len(questions):
@@ -370,7 +397,15 @@ class PromptGPTOS:
             self.question_index += 1
     
     def show_prompt_result(self):
-        """Display the generated prompt result"""
+        """Display the generated prompt result.
+        
+        This method clears the console, shows a header, generates an AI prompt based on
+        the current category and subcategory, and displays the results in styled
+        panels. It also provides navigation options for saving, restarting, going to
+        the home menu, or quitting the application. The user's choice determines the
+        next action, such as saving the prompt, resetting the questionnaire, navigating
+        to the main menu, or exiting the app.
+        """
         console.clear()
         display_manager.show_header()
         
@@ -447,7 +482,7 @@ class PromptGPTOS:
             self.quit_app()
     
     def quit_app(self):
-        """Exit the application gracefully"""
+        """Exit the application gracefully."""
         console.clear()
         goodbye_text = Text()
         goodbye_text.append("👋 ", style="bold yellow")
@@ -466,7 +501,7 @@ class PromptGPTOS:
         sys.exit(0)
 
 def main():
-    """Entry point for the application"""
+    """Starts the PromptGPTOS application and handles exceptions."""
     try:
         app = PromptGPTOS()
         app.run()
