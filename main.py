@@ -73,7 +73,7 @@ class PromptGPTOS:
         # Remove authentication-related attributes
         
     def setup_hotkeys(self):
-        """Setup global hotkeys for navigation"""
+        """Set up global hotkeys and disable them if the keyboard is unavailable."""
         try:
             if KEYBOARD_AVAILABLE:
                 # Disable keyboard hotkeys in terminal environment to prevent input blocking
@@ -136,7 +136,17 @@ class PromptGPTOS:
                 self.current_page = "main_menu"
     
     def show_main_menu(self):
-        """Display the main menu splash screen"""
+        """Display the main menu splash screen.
+        
+        This function clears the console, shows a header, and presents a colorful menu
+        with various options such as starting to create prompts, viewing the README,
+        checking history, accessing settings, viewing statistics, quitting the
+        application, running debugging tools, analyzing codebases, and running tests.
+        It then waits for user input to navigate through different functionalities
+        based on the selected option.  The function handles user choices by updating
+        the `self.current_page` attribute or calling specific methods like
+        `run_debug_system`, `run_analysis_system`, and `run_test_suite`.
+        """
         console.clear()
         display_manager.show_header()
         
@@ -245,7 +255,7 @@ class PromptGPTOS:
             self.quit_app()
     
     def show_readme(self):
-        """Display the readme page"""
+        """Displays the readme page with instructions and guidelines."""
         console.clear()
         display_manager.show_header()
         
@@ -302,7 +312,17 @@ class PromptGPTOS:
             self.current_page = "main_menu"
     
     def show_category_selection(self):
-        """Display category selection menu"""
+        """Displays a menu for category selection.
+        
+        This function clears the console, shows a header, and then presents a list of
+        categories with icons, names, and descriptions. It also includes an option for
+        custom categories and provides navigation options to return to the main menu or
+        quit the application. The user's choice is mapped to a category or subcategory
+        page based on their input.
+        
+        Args:
+            self (object): An instance of the class containing this method.
+        """
         console.clear()
         display_manager.show_header()
         
@@ -364,7 +384,16 @@ class PromptGPTOS:
                     self.current_page = "subcategory_selection"
     
     def show_subcategory_selection(self):
-        """Display subcategory selection for chosen category"""
+        """Display subcategory selection interface for the currently selected category.
+        
+        This function handles the display of subcategories for a chosen category,
+        allows user interaction to select a subcategory, and manages navigation options
+        such as returning to the main menu or quitting the application. It also
+        validates user input and provides feedback for invalid choices.
+        
+        Args:
+            self: The instance of the class containing this method.
+        """
         console.clear()
         display_manager.show_header()
         
@@ -427,7 +456,13 @@ class PromptGPTOS:
                 time.sleep(1)
     
     def show_questionnaire(self):
-        """Display questionnaire for selected category/subcategory"""
+        """Display questionnaire for selected category/subcategory.
+        
+        This function retrieves questions based on the current category and
+        subcategory, displays them, and handles user navigation through various options
+        like next, skip, back, home, quit, and help. It also manages user answers,
+        updates the progress tracker, and clears the console after each action.
+        """
         questions = prompt_gen.get_questions(self.current_category, self.current_subcategory, self.is_custom_category)
         
         if self.question_index >= len(questions):
@@ -1085,7 +1120,7 @@ class PromptGPTOS:
         self.current_page = "main_menu"
 
     def quit_app(self):
-        """Exit the application gracefully with session summary"""
+        """Exit the application gracefully with session summary."""
         console.clear()
         
         # Show final session summary with animation
