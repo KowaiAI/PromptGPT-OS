@@ -48,6 +48,7 @@ from ui.display import DisplayManager
 from config.settings import COLORS, CATEGORIES, ASCII_HEADER
 # Remove unused auth_system import since we removed authentication
 
+f = open('output.txt', 'w+')
 console = Console()
 nav_handler = NavigationHandler()
 prompt_gen = PromptGenerator()
@@ -103,6 +104,7 @@ class PromptGPTOS:
         
         while True:
             try:
+                f.write("run; TOP OF LOOP: self.current_page = {}\n".format(self.current_page))
                 if self.current_page == "main_menu":
                     self.show_main_menu()
                 elif self.current_page == "readme":
@@ -139,6 +141,8 @@ class PromptGPTOS:
         """Display the main menu splash screen"""
         console.clear()
         display_manager.show_header()
+
+        f.write("STARTING Main Menu\n")
         
         # Create colorful menu
         menu_text = Text()
@@ -215,6 +219,9 @@ class PromptGPTOS:
             "[bold cyan]Enter your choice[/bold cyan]",
             default="start"
         ).lower()
+
+        f.write("CHOICE = {}\n".format(choice))
+
         
         if choice in ["start", "s"]:
             progress_tracker.track_category_visit("menu_start")
@@ -248,6 +255,8 @@ class PromptGPTOS:
         """Display the readme page"""
         console.clear()
         display_manager.show_header()
+
+        f.write("STARTING README\n")
         
         readme_content = Text()
         readme_content.append("🎯 ", style="bold yellow")
@@ -305,10 +314,12 @@ class PromptGPTOS:
         """Display category selection menu"""
         console.clear()
         display_manager.show_header()
+
         
         categories_text = Text()
         categories_text.append("🎨 Select the type of content you want to create:\n\n", style="bold white")
         
+        f.write("STARTING 1 shwo_catgeory_selection\n")
         for i, (key, category) in enumerate(CATEGORIES.items(), 1):
             icon = category['icon']
             name = category['name']
@@ -323,15 +334,18 @@ class PromptGPTOS:
         categories_text.append("6. CUSTOM", style="bold magenta")
         categories_text.append(" - Your custom categories and templates\n", style="white")
         
-        categories_text.append("\n🏠 HOME | 🚪 QUIT", style="dim cyan")
-        
+        categories_text.append("\n🏠 HOME | 🚪 QUIT", style="cyan")
+
+       
+        f.write("STARTING 1b CATEGORIES txt\n")
         categories_panel = Panel(
             categories_text,
             title="[bold purple]🎯 CONTENT CATEGORIES 🎯[/bold purple]",
-            border_style="bright_purple",
+            border_style="purple",
             padding=(1, 2)
         )
         
+        f.write("STARTING 2 show_category selection\n") 
         console.print(categories_panel)
         console.print("\n")
         
