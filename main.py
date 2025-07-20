@@ -12,16 +12,29 @@
 
 import sys
 import json
+import os
+import platform
 from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
 from rich.prompt import Prompt, Confirm
 from rich.table import Table
 from rich.align import Align
-import keyboard
 import threading
 import time
-import pyperclip
+
+# Import optional dependencies with fallbacks
+try:
+    import keyboard
+    KEYBOARD_AVAILABLE = True
+except ImportError:
+    KEYBOARD_AVAILABLE = False
+
+try:
+    import pyperclip
+    CLIPBOARD_AVAILABLE = True
+except ImportError:
+    CLIPBOARD_AVAILABLE = False
 
 from utils.navigation import NavigationHandler
 from utils.prompt_generator import PromptGenerator
@@ -33,6 +46,7 @@ from utils.animations import AnimationManager, ProgressTracker
 from utils.history_manager import HistoryManager
 from ui.display import DisplayManager
 from config.settings import COLORS, CATEGORIES, ASCII_HEADER
+# Remove unused auth_system import since we removed authentication
 
 console = Console()
 nav_handler = NavigationHandler()
@@ -44,6 +58,7 @@ clipboard_manager = ClipboardManager()
 animation_manager = AnimationManager()
 progress_tracker = ProgressTracker()
 history_manager = HistoryManager()
+# Remove auth_manager since authentication is disabled
 
 class PromptGPTOS:
     def __init__(self):
@@ -55,18 +70,22 @@ class PromptGPTOS:
         self.hotkey_enabled = True
         self.custom_categories = {}
         self.is_custom_category = False
+        # Remove authentication-related attributes
         
     def setup_hotkeys(self):
         """Setup global hotkeys for navigation"""
         try:
-            # Disable keyboard hotkeys in terminal environment to prevent input blocking
-            # keyboard.add_hotkey('shift+s', lambda: self.handle_hotkey('start'))
-            # keyboard.add_hotkey('shift+r', lambda: self.handle_hotkey('readme'))
-            # keyboard.add_hotkey('shift+q', lambda: self.handle_hotkey('quit'))
-            # keyboard.add_hotkey('shift+h', lambda: self.handle_hotkey('home'))
-            # keyboard.add_hotkey('shift+b', lambda: self.handle_hotkey('back'))
-            # keyboard.add_hotkey('shift+n', lambda: self.handle_hotkey('next'))
-            self.hotkey_enabled = False
+            if KEYBOARD_AVAILABLE:
+                # Disable keyboard hotkeys in terminal environment to prevent input blocking
+                # keyboard.add_hotkey('shift+s', lambda: self.handle_hotkey('start'))
+                # keyboard.add_hotkey('shift+r', lambda: self.handle_hotkey('readme'))
+                # keyboard.add_hotkey('shift+q', lambda: self.handle_hotkey('quit'))
+                # keyboard.add_hotkey('shift+h', lambda: self.handle_hotkey('home'))
+                # keyboard.add_hotkey('shift+b', lambda: self.handle_hotkey('back'))
+                # keyboard.add_hotkey('shift+n', lambda: self.handle_hotkey('next'))
+                self.hotkey_enabled = False
+            else:
+                self.hotkey_enabled = False
         except:
             # If keyboard hotkeys fail, continue without them
             self.hotkey_enabled = False
@@ -194,22 +213,27 @@ class PromptGPTOS:
         
         choice = Prompt.ask(
             "[bold cyan]Enter your choice[/bold cyan]",
-            choices=["start", "history", "readme", "guide", "settings", "stats", "debug", "analyze", "test", "quit", "s", "h", "r", "g", "set", "st", "d", "a", "t", "q"],
             default="start"
         ).lower()
         
         if choice in ["start", "s"]:
             progress_tracker.track_category_visit("menu_start")
+            console.clear()
             self.current_page = "category_selection"
         elif choice in ["history", "h"]:
+            console.clear()
             self.current_page = "history"
         elif choice in ["readme", "r"]:
+            console.clear()
             self.current_page = "readme"
         elif choice in ["guide", "g"]:
+            console.clear()
             self.current_page = "template_guide"
         elif choice in ["settings", "set"]:
+            console.clear()
             self.current_page = "settings"
         elif choice in ["stats", "st"]:
+            console.clear()
             self.current_page = "stats"
         elif choice in ["debug", "d"]:
             self.run_debug_system()
@@ -274,6 +298,7 @@ class PromptGPTOS:
         if choice == "quit":
             self.quit_app()
         else:
+            console.clear()
             self.current_page = "main_menu"
     
     def show_category_selection(self):
@@ -311,13 +336,13 @@ class PromptGPTOS:
         console.print("\n")
         
         choice = Prompt.ask(
-            "[bold cyan]Enter category number or name[/bold cyan]",
-            choices=["1", "2", "3", "4", "5", "6", "code", "image", "music", "text", "video", "custom", "home", "quit"]
+            "[bold cyan]Enter category number or name[/bold cyan]"
         ).lower()
         
         if choice == "quit":
             self.quit_app()
         elif choice == "home":
+            console.clear()
             self.current_page = "main_menu"
         else:
             # Map choice to category
@@ -330,10 +355,12 @@ class PromptGPTOS:
             }
             
             if choice in ["6", "custom"]:
+                console.clear()
                 self.current_page = "custom_category_selection"
             else:
                 self.current_category = category_map.get(choice)
                 if self.current_category:
+                    console.clear()
                     self.current_page = "subcategory_selection"
     
     def show_subcategory_selection(self):
@@ -370,15 +397,16 @@ class PromptGPTOS:
         valid_choices.extend(["back", "home", "quit"])
         
         choice = Prompt.ask(
-            "[bold cyan]Enter subcategory number or name[/bold cyan]",
-            choices=valid_choices
+            "[bold cyan]Enter subcategory number or name[/bold cyan]"
         ).lower()
         
         if choice == "quit":
             self.quit_app()
         elif choice == "home":
+            console.clear()
             self.current_page = "main_menu"
         elif choice == "back":
+            console.clear()
             self.current_page = "category_selection"
         else:
             # Map choice to subcategory
@@ -392,6 +420,7 @@ class PromptGPTOS:
                 self.user_answers = {}
                 self.question_index = 0
                 self.is_custom_category = False
+                console.clear()
                 self.current_page = "questionnaire"
             except (ValueError, IndexError, StopIteration):
                 console.print("[red]Invalid choice. Please try again.[/red]")
@@ -443,32 +472,39 @@ class PromptGPTOS:
         if answer == "quit":
             self.quit_app()
         elif answer == "home":
+            console.clear()
             self.current_page = "main_menu"
         elif answer == "restart":
             self.user_answers = {}
             self.question_index = 0
+            console.clear()
         elif answer == "back":
             if self.question_index > 0:
                 self.question_index -= 1
                 # Remove the previous answer
                 if self.question_index in self.user_answers:
                     del self.user_answers[self.question_index]
+                console.clear()
             else:
+                console.clear()
                 self.current_page = "subcategory_selection"
         elif answer == "next":
             # Move to next question without saving answer
             self.question_index += 1
+            console.clear()
         elif answer == "skip":
             # Skip this question and move to next
             console.print("[yellow]Question skipped.[/yellow]")
             time.sleep(0.5)
             self.question_index += 1
+            console.clear()
         else:
             # Store answer and move to next question
             if answer.strip():  # Only store non-empty answers
                 self.user_answers[self.question_index] = answer
                 progress_tracker.track_question_answered()
             self.question_index += 1
+            console.clear()
     
     def show_prompt_result(self):
         """Display the generated prompt result"""
@@ -1060,6 +1096,8 @@ class PromptGPTOS:
         )
         
         progress_tracker.display_progress_dashboard()
+        
+        # No authentication logout needed
         
         goodbye_text = Text()
         goodbye_text.append("👋 ", style="bold yellow")

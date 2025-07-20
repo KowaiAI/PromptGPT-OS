@@ -3,7 +3,12 @@ Clipboard Manager for PromptGPT OS
 Handles copying generated prompts to system clipboard
 """
 
-import pyperclip
+try:
+    import pyperclip
+    CLIPBOARD_AVAILABLE = True
+except ImportError:
+    CLIPBOARD_AVAILABLE = False
+
 from rich.console import Console
 import platform
 
@@ -17,6 +22,8 @@ class ClipboardManager:
     
     def _check_clipboard_availability(self):
         """Check if clipboard functionality is available"""
+        if not CLIPBOARD_AVAILABLE:
+            return False
         try:
             # Test clipboard access
             pyperclip.copy("test")
@@ -39,7 +46,7 @@ class ClipboardManager:
     
     def copy_to_clipboard(self, text):
         """Copy text to system clipboard"""
-        if not self.available:
+        if not self.available or not CLIPBOARD_AVAILABLE:
             return False, "Clipboard functionality not available"
         
         try:
@@ -50,7 +57,7 @@ class ClipboardManager:
     
     def get_clipboard_content(self):
         """Get current clipboard content"""
-        if not self.available:
+        if not self.available or not CLIPBOARD_AVAILABLE:
             return None
         
         try:
