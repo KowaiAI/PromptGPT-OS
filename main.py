@@ -57,7 +57,7 @@ class PromptGPTOS:
         self.is_custom_category = False
         
     def setup_hotkeys(self):
-        """Setup global hotkeys for navigation"""
+        """Setup global hotkeys and disable them if an error occurs."""
         try:
             # Disable keyboard hotkeys in terminal environment to prevent input blocking
             # keyboard.add_hotkey('shift+s', lambda: self.handle_hotkey('start'))
@@ -72,13 +72,24 @@ class PromptGPTOS:
             self.hotkey_enabled = False
     
     def handle_hotkey(self, action):
-        """Handle hotkey presses"""
+        """Handle hotkey presses."""
         if action == 'quit':
             self.quit_app()
         # Other hotkey actions can be handled here
     
     def run(self):
-        """Main application loop"""
+        """Main application loop.
+        
+        This function serves as the primary entry point for the application, handling
+        user interactions through a series of menu pages. It continuously displays
+        different menus or forms based on the current page state and manages
+        transitions between them. The loop also handles exceptions such as keyboard
+        interrupts and other unexpected errors, ensuring graceful error handling and
+        returning to the main menu when necessary.
+        
+        Args:
+            self: An instance of the class containing this method.
+        """
         console.clear()
         self.setup_hotkeys()
         
@@ -117,7 +128,16 @@ class PromptGPTOS:
                 self.current_page = "main_menu"
     
     def show_main_menu(self):
-        """Display the main menu splash screen"""
+        """Display the main menu splash screen.
+        
+        This function clears the console, shows a header, and creates a colorful menu
+        with various options for the user. It uses `Text` to format the menu items with
+        different styles and colors. The menu includes options to start creating
+        prompts, view the README, check history, access the template guide, manage
+        settings, view statistics, run debugging, analyze codebase, run tests, or quit
+        the application. After displaying the menu, it prompts the user for their
+        choice and updates the `current_page` attribute based on the selected option.
+        """
         console.clear()
         display_manager.show_header()
         
@@ -221,7 +241,7 @@ class PromptGPTOS:
             self.quit_app()
     
     def show_readme(self):
-        """Display the readme page"""
+        """Display the README page."""
         console.clear()
         display_manager.show_header()
         
@@ -277,7 +297,14 @@ class PromptGPTOS:
             self.current_page = "main_menu"
     
     def show_category_selection(self):
-        """Display category selection menu"""
+        """Displays a menu for selecting content categories.
+        
+        This function clears the console, shows a header, and presents a list of
+        predefined categories along with their descriptions. It also includes an option
+        for custom categories and provides navigation options to return to the main
+        menu or quit the application. The user is prompted to enter a category number
+        or name, which determines the subsequent action based on the selected choice.
+        """
         console.clear()
         display_manager.show_header()
         
@@ -337,7 +364,16 @@ class PromptGPTOS:
                     self.current_page = "subcategory_selection"
     
     def show_subcategory_selection(self):
-        """Display subcategory selection for chosen category"""
+        """Display subcategory selection interface for the current category.
+        
+        This function clears the console, displays a header, and then shows a list of
+        subcategories for the selected category. It prompts the user to select a
+        subcategory by number or name. Based on the user's choice, it updates the
+        application state accordingly. If the user selects "quit," the app is
+        terminated; if "home" is chosen, the user returns to the main menu; and
+        selecting "back" navigates back to the category selection page. Valid
+        subcategory selections transition to the questionnaire page.
+        """
         console.clear()
         display_manager.show_header()
         
@@ -398,7 +434,17 @@ class PromptGPTOS:
                 time.sleep(1)
     
     def show_questionnaire(self):
-        """Display questionnaire for selected category/subcategory"""
+        """Display a questionnaire for the selected category and subcategory.
+        
+        This function retrieves questions based on the current category and
+        subcategory, displays them to the user, handles user input, updates the
+        application state accordingly, and manages navigation through the
+        questionnaire. It also provides tips and instructions to the user during the
+        process.
+        
+        Args:
+            self: The instance of the class containing the method.
+        """
         questions = prompt_gen.get_questions(self.current_category, self.current_subcategory, self.is_custom_category)
         
         if self.question_index >= len(questions):
@@ -471,7 +517,18 @@ class PromptGPTOS:
             self.question_index += 1
     
     def show_prompt_result(self):
-        """Display the generated prompt result"""
+        """Display the generated prompt result.
+        
+        This function clears the console, shows a header, generates an AI prompt based
+        on user input, tracks the prompt generation, and adds it to the history. It
+        then displays the category, clipboard status, and the generated prompt in
+        styled panels. The function provides navigation options for copying, saving,
+        restarting, going home, or quitting. Depending on the user's choice, it
+        performs the corresponding action, such as copying the prompt to the clipboard,
+        saving it to a file, restarting the questionnaire, navigating to the main menu,
+        or quitting the application.  The function handles user interactions through
+        prompts and updates internal state accordingly.
+        """
         console.clear()
         display_manager.show_header()
         
@@ -602,12 +659,18 @@ class PromptGPTOS:
             self.quit_app()
     
     def show_template_guide(self):
-        """Display the template creation guide"""
+        """Display the template creation guide."""
         result = show_template_guide()
         self.current_page = "main_menu"
     
     def show_settings(self):
-        """Display settings menu for custom categories and templates"""
+        """Display and handle user interactions with the settings menu.
+        
+        This function clears the console, shows a header, and presents a settings menu
+        with options to add custom categories, upload questions, upload templates, and
+        manage custom content. It then prompts the user for a choice and directs
+        execution to the corresponding method based on the input.
+        """
         console.clear()
         display_manager.show_header()
         
@@ -662,7 +725,15 @@ class PromptGPTOS:
             self.manage_custom_content()
     
     def add_custom_category(self):
-        """Add a new custom category"""
+        """Creates a new custom category with subcategories.
+        
+        This function prompts the user to input a category name and description, then
+        collects multiple subcategories each with their own descriptions. It validates
+        that both the main category and at least one subcategory are provided. The
+        function saves the new category using the `settings_manager` and provides
+        feedback on whether the operation was successful or not. After completion, it
+        sets the current page back to "settings".
+        """
         console.clear()
         display_manager.show_header()
         
@@ -711,7 +782,7 @@ class PromptGPTOS:
         self.current_page = "settings"
     
     def upload_custom_questions(self):
-        """Upload custom questions from file"""
+        """Upload custom questions from a text file."""
         console.clear()
         display_manager.show_header()
         
@@ -739,7 +810,7 @@ class PromptGPTOS:
         self.current_page = "settings"
     
     def upload_custom_template(self):
-        """Upload custom template from file"""
+        """Upload custom template from file."""
         console.clear()
         display_manager.show_header()
         
@@ -767,7 +838,14 @@ class PromptGPTOS:
         self.current_page = "settings"
     
     def manage_custom_content(self):
-        """Manage existing custom content"""
+        """Manage existing custom content.
+        
+        This function displays a menu of custom categories, allows users to select a
+        category or perform actions like deleting a category or returning to settings.
+        It handles user input and updates the current page state accordingly.  If no
+        custom categories are found, it informs the user and prompts them to use other
+        settings options to create custom content.
+        """
         console.clear()
         display_manager.show_header()
         
@@ -818,7 +896,17 @@ class PromptGPTOS:
             self.current_page = "settings"
     
     def delete_custom_category(self, categories):
-        """Delete a custom category"""
+        """Delete a custom category from the list of categories.
+        
+        This function prompts the user to select a category to delete from a numbered
+        list of provided categories. It confirms the deletion and attempts to remove
+        the selected category using the settings manager. If successful, it prints a
+        success message; otherwise, it prints a failure message. The function handles
+        invalid selections gracefully and provides an option to cancel the operation.
+        
+        Args:
+            categories (list): A list of category names that can be deleted.
+        """
         if not categories:
             return
         
@@ -850,7 +938,19 @@ class PromptGPTOS:
         self.current_page = "settings"
     
     def show_custom_category_selection(self):
-        """Display custom categories for selection"""
+        """Displays a panel of custom categories for selection.
+        
+        This function clears the console, shows a header, and loads custom categories
+        from the settings manager. If no custom categories are available, it prompts
+        the user to create them and returns to the category selection page. Otherwise,
+        it constructs a text menu of categories with icons, names, and descriptions,
+        displays it in a panel, and waits for the user's choice. Based on the user's
+        input, it updates the current page or sets the selected category and moves to
+        the custom subcategory selection page.
+        
+        Args:
+            self: The instance of the class containing this method.
+        """
         console.clear()
         display_manager.show_header()
         
@@ -910,7 +1010,18 @@ class PromptGPTOS:
                 pass
     
     def show_custom_subcategory_selection(self):
-        """Display subcategories for custom category"""
+        """Display subcategories for a custom category and handle user selection.
+        
+        This function first loads custom categories and checks if the current category
+        is valid. If not, it redirects to the custom category selection page. It then
+        retrieves subcategories for the current category and displays them in a
+        formatted panel. Users can select a subcategory by number or choose to return
+        home, go back, or quit the application. The function handles invalid inputs
+        gracefully.
+        
+        Args:
+            self: The instance of the class containing this method.
+        """
         console.clear()
         display_manager.show_header()
         
@@ -981,13 +1092,13 @@ class PromptGPTOS:
                 pass
     
     def show_history(self):
-        """Display history page"""
+        """Displays the history page and updates the current page if necessary."""
         result = history_manager.display_history_page()
         if result == "main_menu":
             self.current_page = "main_menu"
     
     def show_stats(self):
-        """Display session statistics and progress dashboard"""
+        """Display session statistics and progress dashboard."""
         console.clear()
         progress_tracker.display_progress_dashboard()
         
@@ -995,7 +1106,7 @@ class PromptGPTOS:
         self.current_page = "main_menu"
 
     def run_debug_system(self):
-        """Run automated debugging system"""
+        """Runs automated debugging system."""
         console.clear()
         display_manager.show_header()
         
@@ -1013,7 +1124,7 @@ class PromptGPTOS:
         self.current_page = "main_menu"
     
     def run_analysis_system(self):
-        """Run codebase analysis system"""
+        """Runs the codebase analysis system."""
         console.clear()
         display_manager.show_header()
         
@@ -1031,7 +1142,7 @@ class PromptGPTOS:
         self.current_page = "main_menu"
     
     def run_test_suite(self):
-        """Run automated test suite"""
+        """Runs automated test suite and handles errors."""
         console.clear()
         display_manager.show_header()
         
@@ -1049,7 +1160,7 @@ class PromptGPTOS:
         self.current_page = "main_menu"
 
     def quit_app(self):
-        """Exit the application gracefully with session summary"""
+        """Exit the application gracefully with a session summary."""
         console.clear()
         
         # Show final session summary with animation
@@ -1079,7 +1190,7 @@ class PromptGPTOS:
         sys.exit(0)
 
 def main():
-    """Entry point for the application"""
+    """Entry point for the application."""
     try:
         app = PromptGPTOS()
         app.run()

@@ -30,7 +30,7 @@ class AnimationManager:
         self.current_progress = None
         
     def typewriter_effect(self, text, delay=0.03, style="white"):
-        """Animated typewriter effect for text display"""
+        """Displays text with an animated typewriter effect."""
         if not self.animation_enabled:
             console.print(text, style=style)
             return
@@ -41,7 +41,7 @@ class AnimationManager:
         console.print()
     
     def loading_spinner(self, message, duration=2.0):
-        """Animated loading spinner with message"""
+        """Displays a loading spinner with a message."""
         if not self.animation_enabled:
             console.print(f"[cyan]{message}[/cyan]")
             time.sleep(0.5)
@@ -57,7 +57,7 @@ class AnimationManager:
             time.sleep(duration)
     
     def progress_bar(self, items, description="Processing"):
-        """Animated progress bar for processing items"""
+        """Displays an animated progress bar while processing items."""
         if not self.animation_enabled:
             console.print(f"[cyan]{description} {len(items)} items...[/cyan]")
             return items
@@ -80,7 +80,7 @@ class AnimationManager:
             return processed_items
     
     def slide_in_panel(self, content, title, border_style="cyan", delay=0.1):
-        """Animated panel that slides in character by character"""
+        """Animates a panel sliding in character by character."""
         if not self.animation_enabled:
             panel = Panel(content, title=title, border_style=border_style)
             console.print(panel)
@@ -97,7 +97,19 @@ class AnimationManager:
         console.print(panel)
     
     def fade_in_text(self, text, steps=5, delay=0.2):
-        """Text that fades in gradually"""
+        """Fades in the given text gradually over a specified number of steps and delay.
+        
+        This method checks if animations are enabled. If not, it simply prints the
+        text. Otherwise, it iteratively adjusts the alpha transparency of the text,
+        changing its style from dim to bold white, and clears the console before
+        printing each step, with a pause between steps as defined by the delay
+        parameter.
+        
+        Args:
+            text (str): The text to be faded in.
+            steps (int): The number of steps for the fade-in effect. Default is 5.
+            delay (float): The time delay between each step, in seconds. Default is 0.2.
+        """
         if not self.animation_enabled:
             console.print(text)
             return
@@ -116,7 +128,7 @@ class AnimationManager:
             time.sleep(delay)
     
     def pulse_text(self, text, pulses=3, delay=0.5):
-        """Text that pulses with changing brightness"""
+        """Pulses text with changing brightness."""
         if not self.animation_enabled:
             console.print(text)
             return
@@ -148,7 +160,17 @@ class AnimationManager:
             time.sleep(delay)
     
     def matrix_effect(self, lines=10, duration=3.0):
-        """Matrix-style falling text effect"""
+        """Displays a matrix-style falling text effect.
+        
+        This function generates a visual effect where random characters fall down the
+        console screen in columns similar to the Matrix movie. It uses ASCII characters
+        and updates the display at regular intervals until the specified duration has
+        elapsed. The animation only runs if `animation_enabled` is set to True.
+        
+        Args:
+            lines (int): Number of lines to display simultaneously (default is 10).
+            duration (float): Total time in seconds for which the effect should run (default is 3.0).
+        """
         if not self.animation_enabled:
             return
             
@@ -163,7 +185,8 @@ class AnimationManager:
             time.sleep(0.1)
     
     def celebration_animation(self):
-        """Success celebration animation"""
+        """Displays a success animation if enabled, otherwise prints a static success
+        message."""
         if not self.animation_enabled:
             console.print("[bold green]✅ Success![/bold green]")
             return
@@ -198,37 +221,37 @@ class ProgressTracker:
         }
         
     def track_category_visit(self, category):
-        """Track category selection"""
+        """Track a visit to a specific category."""
         self.session_stats['categories_visited'].add(category)
     
     def track_subcategory_visit(self, subcategory):
-        """Track subcategory selection"""
+        """Track a visited subcategory."""
         self.session_stats['subcategories_visited'].add(subcategory)
     
     def track_question_answered(self):
-        """Track question answered"""
+        """Increment the count of questions answered in the session stats."""
         self.session_stats['questions_answered'] += 1
     
     def track_prompt_generated(self, template_used=None):
-        """Track prompt generation"""
+        """Increment prompt generation count and track used template."""
         self.session_stats['prompts_generated'] += 1
         if template_used:
             self.session_stats['templates_used'].add(template_used)
     
     def track_custom_category_created(self):
-        """Track custom category creation"""
+        """Increment the count of custom categories created."""
         self.session_stats['custom_categories_created'] += 1
     
     def track_clipboard_copy(self):
-        """Track clipboard usage"""
+        """Increment the clipboard copy count in session stats."""
         self.session_stats['clipboard_copies'] += 1
     
     def track_file_saved(self):
-        """Track file saves"""
+        """Increment the count of saved files in session statistics."""
         self.session_stats['files_saved'] += 1
     
     def get_session_summary(self):
-        """Get comprehensive session summary"""
+        """Return a summary of the session statistics."""
         session_duration = time.time() - self.session_stats['session_start']
         
         return {
@@ -245,7 +268,7 @@ class ProgressTracker:
         }
     
     def _calculate_productivity_score(self):
-        """Calculate productivity score based on activity"""
+        """Calculate productivity score based on session statistics."""
         score = 0
         score += self.session_stats['prompts_generated'] * 10
         score += self.session_stats['questions_answered'] * 2
@@ -257,7 +280,7 @@ class ProgressTracker:
         return min(score, 100)  # Cap at 100
     
     def display_progress_dashboard(self):
-        """Display animated progress dashboard"""
+        """Displays an animated progress dashboard with session statistics."""
         stats = self.get_session_summary()
         
         dashboard_text = f"""

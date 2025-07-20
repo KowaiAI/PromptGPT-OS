@@ -16,7 +16,16 @@ class ClipboardManager:
         self.available = self._check_clipboard_availability()
     
     def _check_clipboard_availability(self):
-        """Check if clipboard functionality is available"""
+        """Check if clipboard functionality is available.
+        
+        This function attempts to test clipboard access by copying and pasting a string
+        using the `pyperclip` library. If an exception occurs, it checks for specific
+        error messages related to missing system dependencies (`xclip` or `xsel`). If
+        such errors are detected, it prints a message indicating that clipboard support
+        is being installed. After installation, it retries the clipboard access test.
+        If the second attempt fails, it prints an error message and returns `False`,
+        indicating that clipboard functionality is unavailable.
+        """
         try:
             # Test clipboard access
             pyperclip.copy("test")
@@ -38,7 +47,7 @@ class ClipboardManager:
             return False
     
     def copy_to_clipboard(self, text):
-        """Copy text to system clipboard"""
+        """Copy text to system clipboard."""
         if not self.available:
             return False, "Clipboard functionality not available"
         
@@ -49,7 +58,7 @@ class ClipboardManager:
             return False, f"Failed to copy: {str(e)}"
     
     def get_clipboard_content(self):
-        """Get current clipboard content"""
+        """Return current clipboard content or None if unavailable."""
         if not self.available:
             return None
         
@@ -59,7 +68,7 @@ class ClipboardManager:
             return None
     
     def show_clipboard_instructions(self):
-        """Show platform-specific clipboard instructions"""
+        """Display platform-specific clipboard instructions."""
         system = platform.system().lower()
         
         if system == "linux":
@@ -72,7 +81,8 @@ class ClipboardManager:
             return "📋 Use your system's paste shortcut to paste from clipboard"
     
     def format_for_clipboard(self, prompt_content, category=None, subcategory=None):
-        """Format prompt content optimally for clipboard"""
+        """Formats prompt content for clipboard, optionally adding category and
+        subcategory information."""
         formatted = f"{prompt_content}\n\n"
         
         if category and subcategory:
@@ -83,8 +93,8 @@ class ClipboardManager:
         return formatted
     
     def copy_prompt_with_metadata(self, prompt_content, category, subcategory):
-        """Copy prompt with optional metadata"""
         # Format the content
+        """Copies formatted prompt content to clipboard with optional metadata."""
         formatted_content = self.format_for_clipboard(prompt_content, category, subcategory)
         
         # Copy to clipboard
@@ -99,7 +109,7 @@ class ClipboardManager:
         return success
     
     def copy_prompt_only(self, prompt_content):
-        """Copy only the prompt content without metadata"""
+        """Copy only the prompt content without metadata."""
         success, message = self.copy_to_clipboard(prompt_content)
         
         if success:
@@ -111,7 +121,7 @@ class ClipboardManager:
         return success
     
     def get_status(self):
-        """Get clipboard manager status"""
+        """Return clipboard manager status, platform, and instructions."""
         return {
             'available': self.available,
             'platform': platform.system(),

@@ -33,7 +33,7 @@ class DisplayManager:
         self.animation_enabled = True
         
     def show_header(self):
-        """Display the main application header with ASCII art"""
+        """Display the main application header with ASCII art and version information."""
         header_text = Text()
         
         # Add the ASCII art header in pink
@@ -63,7 +63,7 @@ class DisplayManager:
         self.console.print()
     
     def show_loading(self, message: str = "Loading...", duration: float = 2.0):
-        """Display an animated loading screen"""
+        """Displays an animated loading screen."""
         if not self.animation_enabled:
             self.console.print(f"[cyan]{message}[/cyan]")
             return
@@ -81,7 +81,7 @@ class DisplayManager:
                 progress.update(task, advance=1)
     
     def show_success_message(self, message: str, details: Optional[str] = None):
-        """Display a success message with optional details"""
+        """Display a success message with optional details."""
         success_text = Text()
         success_text.append("✅ ", style="bright_green")
         success_text.append(message, style="bright_green")
@@ -100,7 +100,7 @@ class DisplayManager:
         self.console.print()
     
     def show_error_message(self, message: str, details: Optional[str] = None):
-        """Display an error message with optional details"""
+        """Display an error message with optional details."""
         error_text = Text()
         error_text.append("❌ ", style="bright_red")
         error_text.append(message, style="bright_red")
@@ -119,7 +119,7 @@ class DisplayManager:
         self.console.print()
     
     def show_warning_message(self, message: str, details: Optional[str] = None):
-        """Display a warning message with optional details"""
+        """Display a warning message with optional details."""
         warning_text = Text()
         warning_text.append("⚠️ ", style="orange1")
         warning_text.append(message, style="orange1")
@@ -138,7 +138,7 @@ class DisplayManager:
         self.console.print()
     
     def show_info_message(self, message: str, details: Optional[str] = None):
-        """Display an informational message with optional details"""
+        """Display an informational message with optional details."""
         info_text = Text()
         info_text.append("ℹ️ ", style="bright_blue")
         info_text.append(message, style="bright_blue")
@@ -158,7 +158,7 @@ class DisplayManager:
     
     def show_table(self, title: str, headers: List[str], rows: List[List[str]], 
                    table_style: str = "bright_cyan"):
-        """Display a formatted table"""
+        """Display a formatted table with specified headers and rows."""
         table = Table(title=title, title_style=f"bold {table_style}")
         
         # Add columns
@@ -173,7 +173,7 @@ class DisplayManager:
         self.console.print()
     
     def show_progress_bar(self, total: int, description: str = "Progress"):
-        """Show a progress bar context manager"""
+        """Create a progress bar context manager."""
         return Progress(
             TextColumn("[progress.description]{task.description}"),
             SpinnerColumn(),
@@ -182,7 +182,7 @@ class DisplayManager:
         )
     
     def create_layout(self, sections: Dict[str, Any]) -> Layout:
-        """Create a rich layout with multiple sections"""
+        """Create a rich layout with multiple sections based on their count."""
         layout = Layout()
         
         if len(sections) == 2:
@@ -200,7 +200,7 @@ class DisplayManager:
         return layout
     
     def show_animated_text(self, text: str, style: str = "white", delay: float = 0.05):
-        """Display text with typing animation"""
+        """Displays text with a typing animation if animations are enabled."""
         if not self.animation_enabled:
             self.console.print(text, style=style)
             return
@@ -212,7 +212,7 @@ class DisplayManager:
                 time.sleep(delay)
     
     def show_category_grid(self, categories: Dict[str, Any]):
-        """Display categories in a grid layout"""
+        """Display categories in a grid layout."""
         grid = Table.grid(padding=1)
         grid.add_column(style="cyan", no_wrap=True)
         grid.add_column(style="magenta", no_wrap=True)
@@ -245,7 +245,7 @@ class DisplayManager:
         self.console.print(category_panel)
     
     def show_help_panel(self, help_content: str, title: str = "Help"):
-        """Display a help panel with formatted content"""
+        """Display a formatted help panel in the console."""
         help_text = Text()
         
         for line in help_content.split('\n'):
@@ -267,7 +267,7 @@ class DisplayManager:
         self.console.print()
     
     def show_statistics(self, stats: Dict[str, Any]):
-        """Display application statistics"""
+        """Display application statistics in a formatted table."""
         stats_table = Table(title="PromptGPT OS Statistics", title_style="bold magenta")
         stats_table.add_column("Metric", style="cyan", no_wrap=True)
         stats_table.add_column("Value", style="green", justify="right")
@@ -279,7 +279,7 @@ class DisplayManager:
         self.console.print()
     
     def show_banner(self, message: str, style: str = "bright_yellow"):
-        """Display a prominent banner message"""
+        """Displays a prominent banner message with the given text and style."""
         banner_text = Text()
         banner_text.append(f"🎉 {message} 🎉", style=style)
         
@@ -293,16 +293,16 @@ class DisplayManager:
         self.console.print()
     
     def clear_screen(self):
-        """Clear the terminal screen"""
+        """Clears the terminal screen."""
         self.console.clear()
     
     def show_separator(self, style: str = "dim white"):
-        """Display a visual separator line"""
+        """Display a visual separator line."""
         separator = "─" * 80
         self.console.print(separator, style=style)
     
     def show_footer(self, message: str = "Thank you for using PromptGPT OS!"):
-        """Display application footer"""
+        """Displays a footer with the given message."""
         footer_text = Text()
         footer_text.append(message, style="dim cyan")
         
@@ -315,19 +315,19 @@ class DisplayManager:
         self.console.print(footer_panel)
     
     def toggle_animation(self):
-        """Toggle animation on/off"""
+        """Toggle animation on or off."""
         self.animation_enabled = not self.animation_enabled
         status = "enabled" if self.animation_enabled else "disabled"
         self.show_info_message(f"Animations {status}")
     
     def set_theme(self, theme_name: str):
-        """Set the display theme"""
         # This would integrate with theme settings from config
+        """Sets the display theme."""
         self.current_theme = theme_name
         self.show_info_message(f"Theme changed to: {theme_name}")
     
     def show_prompt_preview(self, prompt: str, max_length: int = 500):
-        """Show a preview of the generated prompt"""
+        """Displays a preview of the generated prompt."""
         if len(prompt) > max_length:
             preview = prompt[:max_length] + "..."
         else:
