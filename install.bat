@@ -13,7 +13,7 @@ if %errorlevel% neq 0 (
 echo ✓ Python found
 echo 📦 Installing dependencies...
 
-pip install -r project_requirements.txt
+pip install -r requirements.txt
 
 if %errorlevel% neq 0 (
     echo ❌ Failed to install dependencies

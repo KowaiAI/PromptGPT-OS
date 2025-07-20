@@ -234,9 +234,36 @@ Before submitting each response, ask yourself:
 
 The application includes a built-in README accessible from the main menu that provides detailed usage instructions and navigation help.
 
+### Getting Access
+This is a private application that requires authentication. If you don't have access credentials:
+1. Run the application
+2. Select "Request access (new users)"
+3. Fill out the access request form
+4. Wait for approval via email
+
+### Contact Information
+For support, questions, or commercial licensing:
+**Email:** Kowaiai2024@gmail.com
+
 ## 📝 License
 
-This project is designed for AI content creators and prompt engineers to generate high-quality prompts efficiently.
+**Personal Use Only** - This application is provided for personal use only on your personal computer locally.
+
+### Commercial License Required
+If you intend to use this application for any commercial, public, or monetized purpose, you **MUST** purchase a paid commercial license.
+
+**For commercial licensing, contact:** Kowaiai2024@gmail.com
+
+### Prohibited Uses
+- Commercial use of any kind
+- Public distribution or sharing
+- Monetization or profit generation
+- Business or corporate use
+- Resale or licensing to others
+
+### Support & Contact
+For questions, support, or commercial licensing inquiries, please contact:
+**Email:** Kowaiai2024@gmail.com
 
 ---
 

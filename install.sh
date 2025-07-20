@@ -15,7 +15,7 @@ fi
 
 # Install dependencies
 echo "📦 Installing dependencies..."
-pip3 install -r project_requirements.txt
+pip3 install -r requirements.txt
 
 if [[ $? -eq 0 ]]; then
     echo "✓ Dependencies installed successfully"
