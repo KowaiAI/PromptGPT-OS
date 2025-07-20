@@ -21,7 +21,22 @@ class ClipboardManager:
         self.available = self._check_clipboard_availability()
     
     def _check_clipboard_availability(self):
-        """Check if clipboard functionality is available"""
+        """Checks if clipboard functionality is available.
+        
+        This function first verifies if the CLIPBOARD_AVAILABLE flag is set. If not, it
+        returns False. It then attempts to copy and paste a test string using the
+        `pyperclip` library to check for clipboard access. If an exception occurs and
+        the error message contains "xclip" or "xsel", it prints a message indicating
+        that clipboard support is being installed. After installation, it retries the
+        clipboard access. If all attempts fail, it prints a message with the error
+        details and returns False.
+        
+        Args:
+            self: The instance of the class containing this method.
+        
+        Returns:
+            bool: True if clipboard functionality is available, False otherwise.
+        """
         if not CLIPBOARD_AVAILABLE:
             return False
         try:
@@ -45,7 +60,7 @@ class ClipboardManager:
             return False
     
     def copy_to_clipboard(self, text):
-        """Copy text to system clipboard"""
+        """Copy text to system clipboard."""
         if not self.available or not CLIPBOARD_AVAILABLE:
             return False, "Clipboard functionality not available"
         
@@ -56,7 +71,7 @@ class ClipboardManager:
             return False, f"Failed to copy: {str(e)}"
     
     def get_clipboard_content(self):
-        """Get current clipboard content"""
+        """Retrieve current clipboard content if available."""
         if not self.available or not CLIPBOARD_AVAILABLE:
             return None
         

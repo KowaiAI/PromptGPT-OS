@@ -8,9 +8,18 @@ import sys
 import os
 
 def main():
-    """Main launcher function with system checks"""
     
     # Add current directory to Python path
+    """Main launcher function with system checks.
+    
+    This function performs several system checks and initializations before
+    launching the main application. It starts by adding the current directory to
+    the Python path, then checks if the required Python version is met. It attempts
+    to import necessary libraries and checks for the presence of required data
+    files. If any issues are found, it prints error messages and exits. It also
+    creates necessary directories and imports the main application module to run
+    it.
+    """
     current_dir = os.path.dirname(os.path.abspath(__file__))
     if current_dir not in sys.path:
         sys.path.insert(0, current_dir)

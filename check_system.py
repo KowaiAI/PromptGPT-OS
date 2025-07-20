@@ -9,7 +9,7 @@ import platform
 import subprocess
 
 def check_python_version():
-    """Check Python version compatibility"""
+    """Check if the current Python version is compatible."""
     version = sys.version_info
     if version.major < 3 or (version.major == 3 and version.minor < 6):
         print(f"❌ Python {version.major}.{version.minor} is not supported")
@@ -20,7 +20,14 @@ def check_python_version():
         return True
 
 def check_dependencies():
-    """Check all required dependencies"""
+    """Check all required dependencies.
+    
+    This function evaluates a set of predefined dependencies and determines which
+    ones are available in the current Python environment. It categorizes each
+    dependency as either available or missing, with optional dependencies being
+    noted separately. The function prints out the status of each dependency and
+    returns a boolean indicating whether all required dependencies are present.
+    """
     dependencies = {
         'rich': 'Terminal UI framework',
         'keyboard': 'Keyboard input handling (optional)',
@@ -49,7 +56,8 @@ def check_dependencies():
     return len(missing) == 0
 
 def check_terminal_support():
-    """Check terminal compatibility"""
+    """Checks terminal compatibility and prints platform, interactivity, and encoding
+    details."""
     print("\n🖥️  Terminal Compatibility:")
     print(f"✅ Platform: {platform.system()} {platform.release()}")
     
@@ -66,7 +74,8 @@ def check_terminal_support():
     return True
 
 def check_file_permissions():
-    """Check file system permissions"""
+    """Check file system permissions and return True if all checks pass, otherwise
+    False."""
     import os
     import tempfile
     
@@ -94,7 +103,17 @@ def check_file_permissions():
     return True
 
 def run_full_check():
-    """Run complete system compatibility check"""
+    """Runs a comprehensive system compatibility check.
+    
+    This function performs several checks to ensure that the environment meets the
+    necessary requirements for running PromptGPT OS. It verifies Python version,
+    dependencies, terminal support, and file permissions. If all checks pass, it
+    prints instructions on how to start the application. Otherwise, it identifies
+    issues that need to be resolved before proceeding.
+    
+    Returns:
+        bool: True if all checks pass, False otherwise.
+    """
     print("🔍 PromptGPT OS - System Compatibility Check")
     print("=" * 50)
     
