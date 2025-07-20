@@ -1,0 +1,17 @@
+{
+  "name": "PromptGPT OS",
+  "version": "1.0.0",
+  "description": "AI Content Prompt Generator - Offline Distribution",
+  "created": "2025-07-17T20:22:57.292647",
+  "requirements": [
+    "Python 3.6+",
+    "pip package manager",
+    "Terminal/Command prompt"
+  ],
+  "installation": {
+    "linux_mac": "chmod +x install.sh && ./install.sh",
+    "windows": "install.bat",
+    "manual": "pip install -r project_requirements.txt"
+  },
+  "usage": "python main.py"
+}
