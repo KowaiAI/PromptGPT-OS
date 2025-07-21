@@ -98,7 +98,18 @@ class PromptGPTOS:
         # Other hotkey actions can be handled here
     
     def run(self):
-        """Main application loop"""
+        """Main application loop.
+        
+        This method continuously runs the application, handling different pages based
+        on the current page state. It includes a try-except block to catch and handle
+        `KeyboardInterrupt` for graceful termination and other exceptions that may
+        occur during execution. The application transitions between various pages such
+        as "main_menu", "readme", "category_selection", etc., based on the value of
+        `self.current_page`.
+        
+        Args:
+            self: An instance of the class containing this method.
+        """
         console.clear()
         self.setup_hotkeys()
         
@@ -138,7 +149,16 @@ class PromptGPTOS:
                 self.current_page = "main_menu"
     
     def show_main_menu(self):
-        """Display the main menu splash screen"""
+        """Display the main menu splash screen and handle user input.
+        
+        This function clears the console, displays a header, and presents a colorful
+        menu with various options. It captures user input to navigate different parts
+        of the application or perform specific actions like debugging or testing.  The
+        menu includes options for starting the prompt creation process, viewing README
+        instructions, accessing history, following a template guide, managing settings,
+        reviewing statistics, running debugging systems, analyzing codebases, and
+        executing test suites. It also provides an option to quit the application.
+        """
         console.clear()
         display_manager.show_header()
 
@@ -252,7 +272,7 @@ class PromptGPTOS:
             self.quit_app()
     
     def show_readme(self):
-        """Display the readme page"""
+        """Displays the README page and handles user navigation."""
         console.clear()
         display_manager.show_header()
 
@@ -311,7 +331,17 @@ class PromptGPTOS:
             self.current_page = "main_menu"
     
     def show_category_selection(self):
-        """Display category selection menu"""
+        """Displays a menu for selecting content categories.
+        
+        This function clears the console, shows a header, and presents a list of
+        predefined categories along with an option for custom categories. It uses a
+        `Text` object to format and display the categories and their descriptions in a
+        styled panel. After displaying the menu, it prompts the user to enter a
+        category number or name. Based on the user's input, it updates the application
+        state by setting the current page or category accordingly.  The function
+        handles navigation options like "quit" and "home", and maps user choices to
+        their corresponding categories for further processing.
+        """
         console.clear()
         display_manager.show_header()
 
